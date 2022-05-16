@@ -14,3 +14,10 @@ migrateup:
 migratedown:
 	migrate -path migration -database postgresql://root:secret@localhost:5000/bank?sslmode=disable down
 
+# Development Server
+dev:
+	air -c .air.toml
+
+# Test
+test:
+	go test -v -cover ./...

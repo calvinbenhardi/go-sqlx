@@ -1,12 +1,14 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 CREATE TABLE "organizations" (
-  "id" uuid PRIMARY KEY NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL DEFAULT (uuid_generate_v4()),
   "name" varchar NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "organization_branches" (
-  "id" uuid PRIMARY KEY NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL DEFAULT (uuid_generate_v4()),
   "name" varchar NOT NULL,
   "organization_id" uuid NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
@@ -14,7 +16,7 @@ CREATE TABLE "organization_branches" (
 );
 
 CREATE TABLE "users" (
-  "id" uuid PRIMARY KEY NOT NULL,
+  "id" uuid PRIMARY KEY NOT NULL DEFAULT (uuid_generate_v4()),
   "first_name" varchar NOT NULL,
   "email" varchar NOT NULL,
   "password" varchar NOT NULL,
@@ -24,14 +26,14 @@ CREATE TABLE "users" (
 );
 
 CREATE TABLE "wallets" (
-  "id" varchar PRIMARY KEY NOT NULL,
+  "id" varchar PRIMARY KEY NOT NULL DEFAULT (uuid_generate_v4()),
   "balance" numeric(20,2) NOT NULL,
   "created_at" timestamptz NOT NULL DEFAULT (now()),
   "updated_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "ledgers" (
-  "id" varchar PRIMARY KEY NOT NULL,
+  "id" varchar PRIMARY KEY NOT NULL DEFAULT (uuid_generate_v4()),
   "sender_id" uuid NOT NULL,
   "receiver_id" uuid NOT NULL,
   "amount" numeric(20,2) NOT NULL,

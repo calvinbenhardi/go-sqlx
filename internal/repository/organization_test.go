@@ -47,3 +47,19 @@ func TestGetOrganization(t *testing.T) {
 	require.NotEmpty(t, organization2.UpdatedAt)
 
 }
+
+func TestUpdateOrganization(t *testing.T) {
+	organization1 := CreateOrganization(t)
+
+	arg := model.UpdateOrganizationParams{
+		ID:   organization1.ID,
+		Name: gofakeit.Name(),
+	}
+
+	organization2, err := repo.Update(context.Background(), arg)
+
+	require.NoError(t, err)
+	require.NotEmpty(t, organization2)
+
+	require.Equal(t, arg.Name, organization2.Name)
+}

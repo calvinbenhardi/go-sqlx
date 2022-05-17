@@ -51,3 +51,21 @@ func (r *organizationRepositoryImpl) Get(ctx context.Context, id uuid.UUID) (mod
 
 	return organization, nil
 }
+
+func (r *organizationRepositoryImpl) Update(ctx context.Context, arg model.UpdateOrganizationParams) (model.Organization, error) {
+	var organization model.Organization
+
+	row := r.db.QueryRowContext(ctx, `UPDATE organizations SET name = $1 WHERE id = $2 RETURNING *`, arg.Name, arg.ID)
+	err := row.Scan(
+		&organization.ID,
+		&organization.Name,
+		&organization.CreatedAt,
+		&organization.UpdatedAt,
+	)
+
+	if err != nil {
+		return organization, err
+	}
+
+	return organization, nil
+}

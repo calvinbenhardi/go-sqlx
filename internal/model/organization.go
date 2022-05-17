@@ -16,3 +16,8 @@ type Organization struct {
 type CreateOrganizationParams struct {
 	Name string `json:"name"`
 }
+
+type UpdateOrganizationParams struct {
+	ID   uuid.UUID `json:"id" db:"id"`
+	Name string    `json:"name"`
+}

@@ -69,3 +69,8 @@ func (r *organizationRepositoryImpl) Update(ctx context.Context, arg model.Updat
 
 	return organization, nil
 }
+
+func (r *organizationRepositoryImpl) Delete(ctx context.Context, id uuid.UUID) error {
+	_, err := r.db.ExecContext(ctx, `DELETE FROM organizations WHERE id=$1`, id)
+	return err
+}

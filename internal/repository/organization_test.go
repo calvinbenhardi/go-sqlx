@@ -63,3 +63,15 @@ func TestUpdateOrganization(t *testing.T) {
 
 	require.Equal(t, arg.Name, organization2.Name)
 }
+
+func TestDeleteOrganization(t *testing.T) {
+	organization1 := CreateOrganization(t)
+
+	err := repo.Delete(context.Background(), organization1.ID)
+	require.NoError(t, err)
+
+	organization2, err := repo.Get(context.Background(), organization1.ID)
+	require.Error(t, err)
+	require.Empty(t, organization2)
+
+}

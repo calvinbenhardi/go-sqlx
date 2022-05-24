@@ -34,6 +34,24 @@ func TestCreateOrganization(t *testing.T) {
 	CreateOrganization(t)
 }
 
+func TestListOrganization(t *testing.T) {
+	for i := 0; i <= 10; i++ {
+		CreateOrganization(t)
+	}
+
+	arg := model.ListOrganizationParams{
+		Limit:  5,
+		Offset: 0,
+	}
+
+	organizations, err := repo.List(context.Background(), arg)
+
+	require.NoError(t, err)
+	require.NotEmpty(t, organizations)
+
+	require.Equal(t, arg.Limit, len(organizations))
+}
+
 func TestGetOrganization(t *testing.T) {
 	organization1 := CreateOrganization(t)
 	organization2, err := repo.Get(context.Background(), organization1.ID)
@@ -73,5 +91,4 @@ func TestDeleteOrganization(t *testing.T) {
 	organization2, err := repo.Get(context.Background(), organization1.ID)
 	require.Error(t, err)
 	require.Empty(t, organization2)
-
 }

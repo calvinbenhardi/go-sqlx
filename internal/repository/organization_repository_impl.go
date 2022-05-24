@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/calvinbenhardi/go-sqlx/internal/model"
 	"github.com/google/uuid"
@@ -14,6 +15,38 @@ func NewProductRepository(db *sqlx.DB) *organizationRepositoryImpl {
 
 type organizationRepositoryImpl struct {
 	db *sqlx.DB
+}
+
+func (r *organizationRepositoryImpl) List(ctx context.Context, arg model.ListOrganizationParams) ([]model.Organization, error) {
+	var organizations []model.Organization
+
+	rows, _ := r.db.QueryContext(
+		ctx,
+		`SELECT
+			id,
+			name,
+			created_at,
+			updated_at
+		FROM organizations
+		OFFSET $1 LIMIT $2`,
+		arg.Offset, arg.Limit)
+
+	for rows.Next() {
+		var organization model.Organization
+		err := rows.Scan(
+			&organization.ID,
+			&organization.Name,
+			&organization.CreatedAt,
+			&organization.UpdatedAt,
+		)
+		if err != nil {
+			fmt.Print(err)
+		}
+		organizations = append(organizations, organization)
+
+	}
+
+	return organizations, nil
 }
 
 func (r *organizationRepositoryImpl) Save(ctx context.Context, arg model.CreateOrganizationParams) (model.Organization, error) {

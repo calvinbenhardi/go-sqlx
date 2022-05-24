@@ -21,3 +21,8 @@ type UpdateOrganizationParams struct {
 	ID   uuid.UUID `json:"id" db:"id"`
 	Name string    `json:"name"`
 }
+
+type ListOrganizationParams struct {
+	Offset int
+	Limit  int
+}
